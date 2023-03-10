@@ -1,8 +1,11 @@
+using Generator_PDF_Healthy_Care.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<HealthyCareDbContext>();
 
 var app = builder.Build();
 
