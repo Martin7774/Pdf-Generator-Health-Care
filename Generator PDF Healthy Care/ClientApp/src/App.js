@@ -4,37 +4,12 @@ import { useEffect, useState } from "react";
 
 const App = () => {
 
-    //const PatientItem = {
-    //    idPatient: 0,
-    //    name: "",
-    //    lastName: "",
-    //    dateOfBirth: "",
-    //    pesel: "",
-    //    street: "",
-    //    phone: "",
-    //    email: "",
-    //    doctor: "",
-    //};
 
-    const [patients, setPatients] = useState([
-        {
-            idPatient: 1, name: "Jan", lastName: "Kowalski", dateOfBirth: "2001-04-23", pesel: "12345678901",
-            street: "Szkolna 17", phone: "555000555", email: "example@example.com", doctor: "dr. Strange"
-        }
-    ]);
+    const [patients, setPatients] = useState([]);
 
-    //call api
-    /*useEffect(() => {
-        fetch("api/patient/GetPatients")
-            .then(response => { return response.json() })
-            .then(responseJson => {
-
-                setPatients(responseJson)
-            })
-    }, [])*/
 
     async function patientsData() {
-        const response = await fetch('api/patient/GetPatients');
+        const response = await fetch('api/Patient/GetPatients');
 
         if (response.ok) {
             const data = await response.json();
@@ -124,7 +99,7 @@ const App = () => {
                 </table>
             </div>
         </div>
-    </div>)
+    </div>);
 }
 
 export default App;

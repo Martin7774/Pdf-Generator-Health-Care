@@ -31,6 +31,5 @@ namespace Generator_PDF_Healthy_Care.Models
         [RegularExpression(@"^[0-9]+$", ErrorMessage = "Invalid license number format.")]
         public string LicenseNumber { get; set; }
 
-        public virtual ICollection<Patient> Patients { get; set; }
     }
 }

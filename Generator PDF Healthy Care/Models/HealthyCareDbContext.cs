@@ -162,12 +162,6 @@ namespace Generator_PDF_Healthy_Care.Models
                         .IsUnicode(false)
                         .HasMaxLength(20)
                         .HasAnnotation("MaxLength", 20);
-
-            modelBuilder.Entity<Doctor>()
-                        .HasMany(d => d.Patients)
-                        .WithOne(p => p.Doctor)
-                        .HasForeignKey(p => p.DoctorId)
-                        .OnDelete(DeleteBehavior.Restrict);
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

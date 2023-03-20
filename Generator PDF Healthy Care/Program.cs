@@ -1,4 +1,5 @@
 using Generator_PDF_Healthy_Care.Models;
+using Generator_PDF_Healthy_Care.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<HealthyCareDbContext>();
+builder.Services.AddScoped<IPatientService, PatientService>();
 
 var app = builder.Build();
 
