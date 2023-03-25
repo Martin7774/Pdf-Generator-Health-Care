@@ -1,4 +1,7 @@
 import { useEffect, useState } from "react";
+import { useHistory } from 'react-router-dom';
+
+
 
 
 
@@ -19,6 +22,18 @@ const App = () => {
         }
     }
 
+    function handleAddPatient() {
+        const history = useHistory();
+
+        // Przekierowanie do komponentu AddPatientForm
+        history.push('/addPatient');
+    }
+
+    function handleRemovePatient(patientId) {
+        // TODO: Add logic for removing a patient from the list
+    }
+
+
     useEffect(() => {
         patientsData();
     }, []);
@@ -30,6 +45,7 @@ const App = () => {
         <h1>Pacjenci</h1>
         <div className="row">
             <div className="col-sm-12">
+                <button onClick={handleAddPatient}>Dodaj pacjenta</button>
                 <table className="table table-stripped">
                     <thead>
                         <tr>
@@ -67,10 +83,10 @@ const App = () => {
                             patients.map((item) => (
                                 <tr>
                                     <td>
-                                        {item.idPatient}
+                                        {item.id}
                                     </td>
                                     <td>
-                                        {item.name}
+                                        {item.firstName}
                                     </td>
                                     <td>
                                         {item.lastName}
@@ -91,7 +107,14 @@ const App = () => {
                                         {item.email}
                                     </td>
                                     <td>
-                                        {item.doctor}
+                                        {item.doctor.firstName}
+                                        <br></br>
+                                        {item.doctor.lastName}
+                                    </td>
+                                    <td>
+                                        <button onClick={() => handleRemovePatient(item.id)}>
+                                            Usuñ
+                                        </button>
                                     </td>
                                 </tr>))
                         }
