@@ -35,10 +35,10 @@ namespace Generator_PDF_Healthy_Care.Models
         public string Email { get; set; }
         [Required]
         public int DoctorId { get; set; }
-        public virtual Doctor Doctor { get; set; }
+        public virtual Doctor? Doctor { get; set; }
 
 
 
-        public virtual List<Disease> Diseases { get; set; }
+        public virtual List<Disease>? Diseases { get; set; } = null;
     }
 }

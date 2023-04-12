@@ -1,7 +1,10 @@
 ﻿import React, { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import styles from './PersonalForm.css';
 
 function PersonalInformationForm() {
+
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -12,14 +15,36 @@ function PersonalInformationForm() {
         email: ''
     });
 
+    const navigateToPatientsList = () => {
+
+        navigate('/');
+    };
+
     const handleInputChange = event => {
         const { name, value } = event.target;
         setFormData({ ...formData, [name]: value });
     };
 
-    const handleSubmit = event => {
-        event.preventDefault();
-        // handle form submission logic here
+    const handleSubmit = async event => {
+        const response = await fetch('api/Patient/CreatePatient', {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                
+                firstName: formData.firstName,
+                lastName: formData.lastName,
+                dateOfBirth: formData.dateOfBirth,
+                pesel: formData.pesel,
+                street: formData.street,
+                phone: formData.phone,
+                email: formData.email
+                
+            })
+        })
+        console.log(response);
+        if (response.ok) {
+            
+        }
     };
 
     return (
