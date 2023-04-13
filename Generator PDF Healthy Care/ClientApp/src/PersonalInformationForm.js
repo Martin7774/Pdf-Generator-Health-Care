@@ -1,9 +1,12 @@
-﻿import React, { useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import styles from './PersonalForm.css';
 
 function PersonalInformationForm() {
 
+
+
+    const [doctors, setDoctors] = useState([]);
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         firstName: '',
@@ -12,8 +15,22 @@ function PersonalInformationForm() {
         pesel: '',
         street: '',
         phone: '',
-        email: ''
+        email: '',
+        doctorId: ''
     });
+
+
+    async function doctorsData() {
+        const response = await fetch('api/Doctor/GetDoctors');
+
+        if (response.ok) {
+            const data = await response.json();
+            setDoctors(data);
+        } else {
+            alert("HTTP Error: " + response.status)
+        }
+    }
+
 
     const navigateToPatientsList = () => {
 
@@ -26,26 +43,43 @@ function PersonalInformationForm() {
     };
 
     const handleSubmit = async event => {
-        const response = await fetch('api/Patient/CreatePatient', {
-            method: "POST",
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                
-                firstName: formData.firstName,
-                lastName: formData.lastName,
-                dateOfBirth: formData.dateOfBirth,
-                pesel: formData.pesel,
-                street: formData.street,
-                phone: formData.phone,
-                email: formData.email
-                
+        console.log(formData);
+        event.preventDefault();
+        try {
+            const response = await fetch('api/Patient/CreatePatient', {
+                method: "POST",
+                mode: 'cors',
+                headers: { 'content-type': 'application/json' },
+                body: JSON.stringify({
+                    firstName: formData.firstName,
+                    lastName: formData.lastName,
+                    dateOfBirth: formData.dateOfBirth,
+                    pesel: formData.pesel,
+                    street: formData.street,
+                    phone: formData.phone,
+                    email: formData.email,
+                    doctorId: formData.doctorId
+                })
             })
-        })
-        console.log(response);
-        if (response.ok) {
-            
+            console.log("To jest response" + response.statusText)
+            if (!response.ok) {
+                console.log("Failed to add patient");
+                alert("HTTP Error: " + response.status)
+            } else {
+                console.log("Patient added successfully");
+            }
+        } catch (error) {
+            console.log("Error:", error);
         }
     };
+
+
+    useEffect(() => {
+        doctorsData();
+    }, []);
+
+
+    console.log(doctors);
 
     return (
         <form className="personal-form" onSubmit={handleSubmit}>
@@ -105,8 +139,18 @@ function PersonalInformationForm() {
                 onChange={handleInputChange}
             />
 
+            <label htmlFor="doctor">Choose Doctor:</label>
+            <select name="doctorId" onChange={handleInputChange}>
+                <option value="">Select Doctor</option>
+                {doctors.map(doctor => (
+                    <option key={doctor.id} value={doctor.id}>{doctor.lastName}</option>
+                ))}
+            </select>
+
             <button type="submit">Submit</button>
         </form>
+
+
     );
 }
 

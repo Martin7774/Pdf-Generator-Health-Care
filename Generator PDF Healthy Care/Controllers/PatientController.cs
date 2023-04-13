@@ -50,7 +50,7 @@ namespace Generator_PDF_Healthy_Care.Controllers
         //    return Ok();
         //}
 
-        [HttpDelete("{id}")]
+        [HttpDelete("DeletePatient/{id}")]
         public ActionResult Delete([FromRoute] int id)
         {
             _patientService.Delete(id);

@@ -1,56 +1,72 @@
 ﻿import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import styles from './AppStyle.css';
-
-
-
-
+import jsPDF from "jspdf";
+import styles from "./AppStyle.css";
 
 const App = () => {
-
     const navigate = useNavigate();
     const [patients, setPatients] = useState([]);
 
-
     const navigateToaddPatient = () => {
-      
-        navigate('/addPatient');
+        navigate("/addPatient");
     };
 
-
-
     async function patientsData() {
-        const response = await fetch('api/Patient/GetPatients');
-
+        const response = await fetch("api/Patient/GetPatients");
         if (response.ok) {
             const data = await response.json();
             setPatients(data);
         } else {
-            alert("HTTP Error: " + response.status)
+            alert("HTTP Error: " + response.status);
         }
     }
-
-
-
 
     useEffect(() => {
         patientsData();
     }, []);
 
+    const deletePatient = async (id) => {
+        const response = await fetch(`api/Patient/DeletePatient/${id}`, {
+            method: "DELETE",
+        });
+        if (response.ok) {
+            patientsData();
+        } else {
+            alert("HTTP Error: " + response.status);
+        }
+    };
 
+    const generatePDF = (patient) => {
+        const doc = new jsPDF();
 
-
-
-
-        console.log(patients);
+        doc.autoTable({
+            head: [["Name", "Value"]],
+            body: [
+                ["Id Pacjenta", patient.id],
+                ["Imię", patient.firstName],
+                ["Nazwisko", patient.lastName],
+                ["Data Urodzenia", patient.dateOfBirth],
+                ["PESEL", patient.pesel],
+                ["Adres", patient.street],
+                ["Telefon", patient.phone],
+                ["E-mail", patient.email],
+                [
+                    "Lekarz",
+                    `${patient.doctor.firstName} ${patient.doctor.lastName}`,
+                ],
+            ],
+        });
+        console.log("Doszedł")
+        doc.save(`Patient_${patient.id}.pdf`);
+    };
 
     return (
-
-        <><div className="container">
+        <>
+            <div className="container">
                 <h1>Pacjenci</h1>
                 <div className="row">
-                <div className="col-sm-12">
-                    <button onClick={navigateToaddPatient}>Dodaj Pacjenta</button>
+                    <div className="col-sm-12">
+                        <button onClick={navigateToaddPatient}>Dodaj Pacjenta</button>
                         <table className="table table-stripped">
                             <thead>
                                 <tr>
@@ -81,11 +97,17 @@ const App = () => {
                                     <th>
                                         Lekarz
                                     </th>
+                                    <th>
+                                        PDF
+                                    </th>
+                                    <th>
+                                        Usuń
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {patients.map((item) => (
-                                    <tr>
+                                    <tr key={item.id}>
                                         <td>
                                             {item.id}
                                         </td>
@@ -116,15 +138,20 @@ const App = () => {
                                             {item.doctor.lastName}
                                         </td>
                                         <td>
-
+                                            <button onClick={() => generatePDF(item)}>PDF</button>
                                         </td>
-                                    </tr>))}
+                                        <td>
+                                            <button onClick={() => deletePatient(item.id)}>Usuń</button>
+                                        </td>
+                                    </tr>
+                                ))}
                             </tbody>
                         </table>
                     </div>
                 </div>
-            </div></>);
-    };
-
+            </div>
+        </>
+    );
+};
 
 export default App;
