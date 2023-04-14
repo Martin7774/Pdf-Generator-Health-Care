@@ -47,7 +47,7 @@ namespace Generator_PDF_Healthy_Care.Controllers
         //    return Ok();
         //}
 
-        [HttpDelete("{id}")]
+        [HttpDelete("DeleteDoctor/{id}")]
         public ActionResult Delete([FromRoute] int id)
         {
             _doctorService.Delete(id);

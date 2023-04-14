@@ -1,77 +1,79 @@
-﻿import { useEffect, useState } from "react";
+﻿import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import jsPDF from "jspdf";
-import styles from "./AppStyle.css";
+import "jspdf-autotable";
+import styles from "./ListStyle.css";
 
-const App = () => {
+const DoctorsList = () => {
     const navigate = useNavigate();
-    const [patients, setPatients] = useState([]);
+    const [doctors, setDoctors] = useState([]);
 
-    const navigateToaddPatient = () => {
-        navigate("/addPatient");
+    const navigateToaddDoctor = () => {
+        navigate("/addDoctor");
     };
 
-    async function patientsData() {
-        const response = await fetch("api/Patient/GetPatients");
+    async function doctorsData() {
+        const response = await fetch("api/Doctor/GetDoctors");
         if (response.ok) {
             const data = await response.json();
-            setPatients(data);
+            setDoctors(data);
         } else {
             alert("HTTP Error: " + response.status);
         }
     }
 
     useEffect(() => {
-        patientsData();
+        doctorsData();
     }, []);
 
-    const deletePatient = async (id) => {
-        const response = await fetch(`api/Patient/DeletePatient/${id}`, {
+    const deleteDoctor = async (id) => {
+        const response = await fetch(`api/Doctor/DeleteDoctor/${id}`, {
             method: "DELETE",
         });
         if (response.ok) {
-            patientsData();
+            doctorsData();
         } else {
             alert("HTTP Error: " + response.status);
         }
     };
 
-    const generatePDF = (patient) => {
+    const generatePDF = (doctor) => {
+        console.log("Wszedł do PDF");
         const doc = new jsPDF();
 
         doc.autoTable({
             head: [["Name", "Value"]],
             body: [
-                ["Id Pacjenta", patient.id],
-                ["Imię", patient.firstName],
-                ["Nazwisko", patient.lastName],
-                ["Data Urodzenia", patient.dateOfBirth],
-                ["PESEL", patient.pesel],
-                ["Adres", patient.street],
-                ["Telefon", patient.phone],
-                ["E-mail", patient.email],
+                ["Id Pacjenta", doctor.id],
+                ["Imię", doctor.firstName],
+                ["Nazwisko", doctor.lastName],
+                ["Data Urodzenia", doctor.dateOfBirth],
+                ["PESEL", doctor.pesel],
+                ["Adres", doctor.street],
+                ["Telefon", doctor.phone],
+                ["E-mail", doctor.email],
                 [
                     "Lekarz",
-                    `${patient.doctor.firstName} ${patient.doctor.lastName}`,
+                    `${doctor.doctor.firstName} ${doctor.doctor.lastName}`,
                 ],
             ],
         });
         console.log("Doszedł")
-        doc.save(`Patient_${patient.id}.pdf`);
+        doc.save(`Patient_${doctor.id}.pdf`);
     };
 
     return (
         <>
             <div className="container">
-                <h1>Pacjenci</h1>
+                <h1>Lekarze</h1>
                 <div className="row">
                     <div className="col-sm-12">
-                        <button onClick={navigateToaddPatient}>Dodaj Pacjenta</button>
+                        <button onClick={navigateToaddDoctor}>Dodaj Lekarza</button>
                         <table className="table table-stripped">
                             <thead>
                                 <tr>
                                     <th>
-                                        Id Pacjenta
+                                        Id Lekarza
                                     </th>
                                     <th>
                                         Imię
@@ -80,22 +82,16 @@ const App = () => {
                                         Nazwisko
                                     </th>
                                     <th>
-                                        Data Urodzenia
-                                    </th>
-                                    <th>
-                                        PESEL
-                                    </th>
-                                    <th>
-                                        Adres
-                                    </th>
-                                    <th>
                                         Telefon
                                     </th>
                                     <th>
                                         E-mail
                                     </th>
                                     <th>
-                                        Lekarz
+                                        Specjalizacja
+                                    </th>
+                                    <th>
+                                        Numer Licencji
                                     </th>
                                     <th>
                                         PDF
@@ -106,7 +102,7 @@ const App = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {patients.map((item) => (
+                                {doctors.map((item) => (
                                     <tr key={item.id}>
                                         <td>
                                             {item.id}
@@ -118,30 +114,22 @@ const App = () => {
                                             {item.lastName}
                                         </td>
                                         <td>
-                                            {item.dateOfBirth}
-                                        </td>
-                                        <td>
-                                            {item.pesel}
-                                        </td>
-                                        <td>
-                                            {item.street}
-                                        </td>
-                                        <td>
                                             {item.phone}
                                         </td>
                                         <td>
                                             {item.email}
                                         </td>
                                         <td>
-                                            {item.doctor.firstName}
-                                            <br></br>
-                                            {item.doctor.lastName}
+                                            {item.specialization}
+                                        </td>
+                                        <td>
+                                            {item.licenseNumber}
                                         </td>
                                         <td>
                                             <button onClick={() => generatePDF(item)}>PDF</button>
                                         </td>
                                         <td>
-                                            <button onClick={() => deletePatient(item.id)}>Usuń</button>
+                                            <button onClick={() => deleteDoctor(item.id)}>Usuń</button>
                                         </td>
                                     </tr>
                                 ))}
@@ -154,4 +142,4 @@ const App = () => {
     );
 };
 
-export default App;
+export default DoctorsList;

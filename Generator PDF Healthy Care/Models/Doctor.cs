@@ -23,9 +23,13 @@ namespace Generator_PDF_Healthy_Care.Models
         [EmailAddress(ErrorMessage = "Invalid email format.")]
         public string Email { get; set; }
 
+
+
         [Required(ErrorMessage = "Specialization is required.")]
-        [StringLength(50, MinimumLength = 2, ErrorMessage = "Specialization should be between 2 and 50 characters.")]
-        public string Specialization { get; set; }
+        public int SpecializationId { get; set; }
+        public virtual Specialization? Specialization { get; set; }
+
+
 
         [Required(ErrorMessage = "License number is required.")]
         [RegularExpression(@"^[0-9]+$", ErrorMessage = "Invalid license number format.")]

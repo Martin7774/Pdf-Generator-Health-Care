@@ -2,40 +2,37 @@
 import { useNavigate } from "react-router-dom";
 import styles from './PersonalForm.css';
 
-function PersonalInformationForm() {
+function AddDoctor() {
 
 
 
-    const [doctors, setDoctors] = useState([]);
+    const [specializations, setSpecializations] = useState([]);
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
-        dateOfBirth: '',
-        pesel: '',
-        street: '',
         phone: '',
         email: '',
-        doctorId: ''
+        specializationId: '',
+        licenseNumber: ''
     });
 
+    const navigateToDoctorsList = () => {
+        navigate("/doctorsList");
+    };
 
-    async function doctorsData() {
-        const response = await fetch('api/Doctor/GetDoctors');
+
+    async function specializationsData() {
+        const response = await fetch('api/Specialization/GetSpecializations');
 
         if (response.ok) {
             const data = await response.json();
-            setDoctors(data);
+            setSpecializations(data);
         } else {
             alert("HTTP Error: " + response.status)
         }
     }
 
-
-    const navigateToPatientsList = () => {
-
-        navigate('/patientsList');
-    };
 
     const handleInputChange = event => {
         const { name, value } = event.target;
@@ -46,19 +43,17 @@ function PersonalInformationForm() {
         console.log(formData);
         event.preventDefault();
         try {
-            const response = await fetch('api/Patient/CreatePatient', {
+            const response = await fetch('api/Doctor/CreateDoctor', {
                 method: "POST",
                 mode: 'cors',
                 headers: { 'content-type': 'application/json' },
                 body: JSON.stringify({
                     firstName: formData.firstName,
                     lastName: formData.lastName,
-                    dateOfBirth: formData.dateOfBirth,
-                    pesel: formData.pesel,
-                    street: formData.street,
                     phone: formData.phone,
                     email: formData.email,
-                    doctorId: formData.doctorId
+                    specializationId: formData.specializationId,
+                    licenseNumber: formData.licenseNumber
                 })
             })
             console.log("To jest response" + response.statusText)
@@ -67,7 +62,7 @@ function PersonalInformationForm() {
                 alert("HTTP Error: " + response.status)
             } else {
                 console.log("Patient added successfully");
-                navigateToPatientsList();
+                navigateToDoctorsList();
             }
         } catch (error) {
             console.log("Error:", error);
@@ -76,11 +71,11 @@ function PersonalInformationForm() {
 
 
     useEffect(() => {
-        doctorsData();
+        specializationsData();
     }, []);
 
 
-    console.log(doctors);
+    console.log(specializations);
 
     return (
         <form className="personal-form" onSubmit={handleSubmit}>
@@ -100,29 +95,6 @@ function PersonalInformationForm() {
                 onChange={handleInputChange}
             />
 
-            <label htmlFor="dateOfBirth">Data Urodzenia:</label>
-            <input
-                type="date"
-                name="dateOfBirth"
-                value={formData.dateOfBirth}
-                onChange={handleInputChange}
-            />
-
-            <label htmlFor="pesel">PESEL:</label>
-            <input
-                type="text"
-                name="pesel"
-                value={formData.pesel}
-                onChange={handleInputChange}
-            />
-
-            <label htmlFor="street">Ulica:</label>
-            <input
-                type="text"
-                name="street"
-                value={formData.street}
-                onChange={handleInputChange}
-            />
 
             <label htmlFor="phone">Telefon:</label>
             <input
@@ -140,11 +112,19 @@ function PersonalInformationForm() {
                 onChange={handleInputChange}
             />
 
-            <label htmlFor="doctor">Choose Doctor:</label>
-            <select name="doctorId" onChange={handleInputChange}>
-                <option value="">Select Doctor</option>
-                {doctors.map(doctor => (
-                    <option key={doctor.id} value={doctor.id}>{doctor.lastName}</option>
+            <label htmlFor="lastName">Numer Licencji:</label>
+            <input
+                type="text"
+                name="licenseNumber"
+                value={formData.licenseNumber}
+                onChange={handleInputChange}
+            />
+
+            <label htmlFor="specialization">Wybierz specjalizacje:</label>
+            <select name="specializationId" onChange={handleInputChange}>
+                <option value="">Wybierz Specjalizacje</option>
+                {specializations.map(specialization => (
+                    <option key={specialization.id} value={specialization.id}>{specialization.name}</option>
                 ))}
             </select>
 
@@ -155,4 +135,4 @@ function PersonalInformationForm() {
     );
 }
 
-export default PersonalInformationForm;
+export default AddDoctor;

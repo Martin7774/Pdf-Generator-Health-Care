@@ -13,6 +13,7 @@ namespace Generator_PDF_Healthy_Care.Models
         public DbSet<Disease> Diseases { get; set; }
 
         public DbSet<Doctor> Doctors { get; set; }
+        public DbSet<Specialization> Specializations { get; set; }
 
 
 
@@ -119,12 +120,12 @@ namespace Generator_PDF_Healthy_Care.Models
             /////////////////////////////////////
             ///
             modelBuilder.Entity<Doctor>()
-            .Property(d => d.FirstName)
-            .IsRequired()
-            .HasMaxLength(50)
-            .IsUnicode()
-            .HasAnnotation("MaxLength", 50)
-            .HasAnnotation("MinLength", 2);
+                        .Property(d => d.FirstName)
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .IsUnicode()
+                        .HasAnnotation("MaxLength", 50)
+                        .HasAnnotation("MinLength", 2);
 
             modelBuilder.Entity<Doctor>()
                         .Property(d => d.LastName)
@@ -149,12 +150,9 @@ namespace Generator_PDF_Healthy_Care.Models
                         .HasAnnotation("MaxLength", 50);
 
             modelBuilder.Entity<Doctor>()
-                        .Property(d => d.Specialization)
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .IsUnicode()
-                        .HasAnnotation("MaxLength", 50)
-                        .HasAnnotation("MinLength", 2);
+                        .HasOne(d => d.Specialization)
+                        .WithMany(s => s.Doctors)
+                        .HasForeignKey(d => d.SpecializationId);
 
             modelBuilder.Entity<Doctor>()
                         .Property(d => d.LicenseNumber)
@@ -162,6 +160,21 @@ namespace Generator_PDF_Healthy_Care.Models
                         .IsUnicode(false)
                         .HasMaxLength(20)
                         .HasAnnotation("MaxLength", 20);
+            ////////////////////////////////////////////////
+            modelBuilder.Entity<Specialization>()
+                        .Property(d => d.Name)
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .IsUnicode()
+                        .HasAnnotation("MaxLength", 50)
+                        .HasAnnotation("MinLength", 2);
+            modelBuilder.Entity<Specialization>()
+                        .Property(d => d.Description)
+                        .IsRequired(false)
+                        .HasMaxLength(200)
+                        .IsUnicode()
+                        .HasAnnotation("MaxLength", 200)
+                        .HasAnnotation("MinLength", 2);
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
