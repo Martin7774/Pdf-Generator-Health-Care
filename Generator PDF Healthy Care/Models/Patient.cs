@@ -39,6 +39,6 @@ namespace Generator_PDF_Healthy_Care.Models
 
 
 
-        public virtual List<Disease>? Diseases { get; set; } = null;
+        //public ICollection<Disease>? Diseases { get; set; } = null;
     }
 }

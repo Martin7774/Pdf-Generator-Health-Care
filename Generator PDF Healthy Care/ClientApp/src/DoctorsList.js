@@ -62,6 +62,8 @@ const DoctorsList = () => {
         doc.save(`Patient_${doctor.id}.pdf`);
     };
 
+    console.log(doctors);
+
     return (
         <>
             <div className="container">
@@ -120,7 +122,7 @@ const DoctorsList = () => {
                                             {item.email}
                                         </td>
                                         <td>
-                                            {item.specialization}
+                                            {item.specialization.name}
                                         </td>
                                         <td>
                                             {item.licenseNumber}

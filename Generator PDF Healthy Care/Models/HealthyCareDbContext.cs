@@ -112,10 +112,9 @@ namespace Generator_PDF_Healthy_Care.Models
                 .Property(d => d.PatientId)
                 .IsRequired();
 
-            modelBuilder.Entity<Disease>()
-                .HasOne(d => d.Patient)
-                .WithMany(p => p.Diseases)
-                .HasForeignKey(d => d.PatientId);
+            //modelBuilder.Entity<Disease>()
+            //    .HasOne(d => d.Patient)
+            //    .HasForeignKey(d => d.PatientId);
 
             /////////////////////////////////////
             ///

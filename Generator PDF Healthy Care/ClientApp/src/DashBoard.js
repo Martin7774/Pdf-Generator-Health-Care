@@ -29,7 +29,7 @@ const Dashboard = () => {
                     </div>
                 </div>
                 <div className="col-sm-6 col-md-3">
-                    <div className="card" onClick={() => handleClick("/page3")}>
+                    <div className="card" onClick={() => handleClick("/diseasesList")}>
                         <div className="card-body">
                             <h5 className="card-title">Choroby</h5>
                             <p className="card-text">Go to Page 3</p>

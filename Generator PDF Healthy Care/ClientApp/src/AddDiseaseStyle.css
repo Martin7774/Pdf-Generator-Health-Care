@@ -1,0 +1,33 @@
+﻿.disease-form {
+    padding: 20px;
+    border-radius: 5px;
+}
+
+    .disease-form label {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .disease-form input,
+    .disease-form textarea,
+    .disease-form select {
+        width: 100%;
+        padding: 5px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+    }
+
+    .disease-form button[type="submit"] {
+        background-color: #008CBA;
+        color: white;
+        padding: 10px 20px;
+        border: 2px solid white;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+        .disease-form button[type="submit"]:hover {
+            background-color: #0077B3;
+            color: white;
+        }

@@ -25,7 +25,7 @@ namespace Generator_PDF_Healthy_Care.Service
             var patients = _dbContext
               .Patients
               .Include(r => r.Doctor)
-              .Include(r => r.Diseases)
+//              .Include(r => r.Diseases)
               .ToList();
 
             return patients;

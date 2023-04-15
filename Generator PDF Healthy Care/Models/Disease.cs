@@ -28,6 +28,6 @@ namespace Generator_PDF_Healthy_Care.Models
         public string Prevention { get; set; }
         [Required]
         public int PatientId { get; set; }
-        public virtual Patient Patient { get; set; }
+        public virtual Patient? Patient { get; set; }
     }
 }

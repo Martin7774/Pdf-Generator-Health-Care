@@ -4,39 +4,39 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Generator_PDF_Healthy_Care.Service
 {
-    public class DoctorService : IDoctorService
+    public class DiseaseService : IDiseaseService
     {
         public readonly HealthyCareDbContext _dbContext;
 
-        public DoctorService(HealthyCareDbContext dbContext)
+        public DiseaseService(HealthyCareDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-        public int Create(Doctor doctor)
+        public int Create(Disease disease)
         {
-            _dbContext.Doctors.Add(doctor);
+            _dbContext.Diseases.Add(disease);
             _dbContext.SaveChanges();
 
-            return doctor.Id;
+            return disease.Id;
         }
-        public IEnumerable<Doctor> GetAll()
+        public IEnumerable<Disease> GetAll()
         {
-            var doctors = _dbContext
-              .Doctors
-              .Include(r => r.Specialization)
+            var diseases = _dbContext
+              .Diseases
+              .Include(r => r.Patient)
               .ToList();
 
-            return doctors;
+            return diseases;
         }
         public void Delete(int id)
         {
-            var doctor = _dbContext
-                .Doctors
+            var disease = _dbContext
+                .Diseases
                 .FirstOrDefault(x => x.Id == id);
 
 
-            _dbContext.Doctors.Remove(doctor);
+            _dbContext.Diseases.Remove(disease);
             _dbContext.SaveChanges();
 
 
