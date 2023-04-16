@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import styles from "./ListStyle.css";
+import Navigation from "./Navigation";
 
 const PatientsList = () => {
     const navigate = useNavigate();
@@ -64,6 +65,7 @@ const PatientsList = () => {
 
     return (
         <>
+            <Navigation className="navigation" />
             <div className="container">
                 <h1>Pacjenci</h1>
                 <div className="row">

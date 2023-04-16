@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import styles from "./ListStyle.css";
+import Navigation from "./Navigation";
+
+
 
 const DiseasesList = () => {
     const navigate = useNavigate();
@@ -43,34 +46,33 @@ const DiseasesList = () => {
 
 
     const generatePDF = (disease) => {
-    //    console.log("Wszed³ do PDF");
-    //    const doc = new jsPDF();
+        console.log("Wszed³ do PDF");
+        const doc = new jsPDF();
 
-    //    doc.autoTable({
-    //        head: [["Name", "Value"]],
-    //        body: [
-    //            ["Id Pacjenta", doctor.id],
-    //            ["Imiê", doctor.firstName],
-    //            ["Nazwisko", doctor.lastName],
-    //            ["Data Urodzenia", doctor.dateOfBirth],
-    //            ["PESEL", doctor.pesel],
-    //            ["Adres", doctor.street],
-    //            ["Telefon", doctor.phone],
-    //            ["E-mail", doctor.email],
-    //            [
-    //                "Lekarz",
-    //                `${doctor.doctor.firstName} ${doctor.doctor.lastName}`,
-    //            ],
-    //        ],
-    //    });
-    //    console.log("Doszed³")
-    //    doc.save(`Patient_${doctor.id}.pdf`);
+        doc.autoTable({
+            head: [["Name", "Value"]],
+            body: [
+                ["Nazwa choroby", disease.name],
+                ["Opis", disease.description],
+                ["Objawy", disease.symptoms],
+                ["Przyczyny", disease.causes],
+                ["Leczenie", disease.treatments],
+                ["Zapobieganie", disease.prevention],
+                ["Id pacjenta", disease.patientId],
+                ["Pacjent",
+                    `${disease.patient.firstName} ${disease.patient.lastName}`,],
+            ],
+        });
+
+        console.log("Zapisuje do PDF");
+        doc.save(`Disease_${disease.id}.pdf`);
     };
 
     console.log(diseases);
 
     return (
         <>
+            <Navigation className="navigation" />
             <div className="container">
                 <h1>Choroby</h1>
                 <div className="row">

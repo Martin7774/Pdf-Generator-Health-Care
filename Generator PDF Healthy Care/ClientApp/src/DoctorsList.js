@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import styles from "./ListStyle.css";
+import Navigation from "./Navigation";
 
 const DoctorsList = () => {
     const navigate = useNavigate();
@@ -44,28 +45,24 @@ const DoctorsList = () => {
         doc.autoTable({
             head: [["Name", "Value"]],
             body: [
-                ["Id Pacjenta", doctor.id],
+                ["Id Lekarza", doctor.id],
                 ["Imię", doctor.firstName],
                 ["Nazwisko", doctor.lastName],
-                ["Data Urodzenia", doctor.dateOfBirth],
-                ["PESEL", doctor.pesel],
-                ["Adres", doctor.street],
                 ["Telefon", doctor.phone],
                 ["E-mail", doctor.email],
-                [
-                    "Lekarz",
-                    `${doctor.doctor.firstName} ${doctor.doctor.lastName}`,
-                ],
+                ["Specjalizacja", doctor.specialization.name],
+                ["Numer Licencji", doctor.licenseNumber]
             ],
         });
-        console.log("Doszedł")
-        doc.save(`Patient_${doctor.id}.pdf`);
+        console.log("Zapisuje do PDF")
+        doc.save(`Doctor_${doctor.id}.pdf`);
     };
 
     console.log(doctors);
 
     return (
         <>
+            <Navigation className="navigation" />
             <div className="container">
                 <h1>Lekarze</h1>
                 <div className="row">

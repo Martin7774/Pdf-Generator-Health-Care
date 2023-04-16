@@ -1,0 +1,28 @@
+﻿.navigation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    border-bottom: 1px solid #ccc;
+    padding: 10px 20px;
+}
+
+.navLink {
+    text-decoration: none;
+    color: #333;
+    margin-right: 20px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+    .navLink:hover {
+        color: #000;
+    }
+
+.active {
+    color: #f00;
+}
